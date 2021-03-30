@@ -43,7 +43,7 @@
                                 <a href="/user/update" class="primary-btn">Update Profile</a>
                                 <a href="/user/password" class="primary-btn">Change Password</a>
                             </th>
-                            <td><img src="{{ profile.image.url }}" style="border-radius: 45px; height: 200px "></td>
+                            <td><img src="{{ request.user.userprofile.image.url }}" style="border-radius: 45px; height: 200px "></td>
                         </tr>
                                             {% if messages %}
                         {% for message in messages %}

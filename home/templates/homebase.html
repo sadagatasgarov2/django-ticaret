@@ -49,7 +49,11 @@
 	<script src="{% static 'ajaxscripts/jquery-1.11.4.min.js' %}"></script>
      !-->
 
-	{% block head %}{% endblock %}
+	{% block head %}
+	<link rel="icon"
+      type="image/png"
+      href="{{ setting.icon.url}}">
+	{% endblock %}
 
 
 </head>

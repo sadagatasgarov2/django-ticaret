@@ -41,7 +41,7 @@
 				<div class="pull-left">
 					<!-- Logo -->
 					<div class="header-logo">
-						<a class="logo" href="#">
+						<a class="logo" href="/">
 							<img src="{% static  'img/logo.png' %}" alt="">
 						</a>
 					</div>
@@ -98,7 +98,7 @@
 							{% if user.id is not None %}
 							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
 								<div class="header-btns-icon">
-									<img src="{{request.user.profile.image.url}}">
+									<img class="img-responsive" src="{{ request.user.userprofile.image.url }}">
 								</div>
 								<strong class="text-uppercase">{{user.first_name}} <i class="fa fa-caret-down"></i></strong>
 							</div>
@@ -132,16 +132,18 @@
 							<div class="custom-menu">
 								<div id="shopping-cart">
 									<div class="shopping-cart-list">
+										{% for rs in minishopcart %}
 										<div class="product product-widget">
 											<div class="product-thumb">
-												<img src="{% static  'img/thumb-product01.jpg' %}" alt="">
+												<img src="{{rs.product.image.url}}" alt="">
 											</div>
 											<div class="product-body">
-												<h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
-												<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+												<h3 class="product-price">{{rs.product.price}} <span class="qty">x{{rs.quantity}}</span></h3>
+												<h2 class="product-name"><a href="#">{{rs.product}}</a></h2>
 											</div>
 											<button class="cancel-btn"><i class="fa fa-trash"></i></button>
 										</div>
+										{% endfor %}
 										<div class="product product-widget">
 											<div class="product-thumb">
 												<img src="{% static  'img/thumb-product01.jpg' %}" alt="">

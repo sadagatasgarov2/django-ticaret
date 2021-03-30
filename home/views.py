@@ -31,7 +31,7 @@ def index(request):
                'page': 'home',
                'dayproduct': dayproduct,
                'lastproduct': lastproduct,
-               'randomproduct': randomproduct
+               'randomproduct': randomproduct,
                }
     return render(request, 'index.html', context)
 
