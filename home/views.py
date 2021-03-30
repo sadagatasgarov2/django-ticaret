@@ -10,22 +10,25 @@ from django.contrib import messages
 import product
 from home.forms import SearchForm, SignupForm
 from home.models import Setting, ContactForm, ContactFormMassage, UserProfile
+from order.models import ShopCart
 from product.models import Product, Category, Images, Comment
 
 
 def index(request):
+    current_user = request.user
     setting = Setting.objects.get(pk=3)
     sliderdata = Product.objects.all()[:5]
     category = Category.objects.all()
     dayproduct = Product.objects.all()[:4]
     lastproduct = Product.objects.all().order_by('-id')[:4]
     randomproduct = Product.objects.all().order_by('?')[:4]
+    request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
     university = "Karabuk University"
     dept = "Computer Engineering"
     context = {'setting': setting,
                'sliderdata': sliderdata,
                'category': category,
-               'page': 'hakkimizda',
+               'page': 'home',
                'dayproduct': dayproduct,
                'lastproduct': lastproduct,
                'randomproduct': randomproduct
@@ -97,14 +100,14 @@ def product_detail(request, id, slug):
 
 def content_detail(request, id, slug):
     category = Category.objects.all()
-    product_detail = Product.objects.filter(category_id=id)
-    link ='/product/' + str(product_detail[0].id) + '/' + product_detail[0].slug
+    products = Product.objects.filter(category_id=id)
+    ## link ='/product/' + str(product_detail[0].id) + '/' + product_detail[0].slug
     context = {'category': category,
-               'product_detail': product_detail,
+               'products': products,
                }
-    return HttpResponse(link)
-    return HttpResponseRedirect(link)
-
+    return render(request, 'products.html', context)
+    ## return HttpResponse(link)
+    ## return HttpResponseRedirect(link)
 
 
 def product_search(request):
@@ -154,7 +157,6 @@ def login_view(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-
             return HttpResponseRedirect('/')
         else:
             # Return an 'invalid login' error message.

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 	{% load static %}
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,11 +34,20 @@
 		  <script src='https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js'></script>
 		  <script src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
 		<![endif]-->
+
 	<!-- jQuery !-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
 	<!-- jQuery UI !-->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+	<!--
+	jQuery
+	<script src="{% static 'ajaxscripts/jquery-1.12.0.min.js' %}"> </script>
+	jQuery UI
+	<link  type="text/css"  rel="stylesheet" href="{% static 'ajaxscripts/jquery-ui-1.11.4.css' %}">
+	<script src="{% static 'ajaxscripts/jquery-1.11.4.min.js' %}"></script>
+     !-->
 
 	{% block head %}{% endblock %}
 
@@ -49,13 +58,13 @@
 
 {% include 'header.html' %}
 {% block header %}{% endblock %}
-											 {% if messages %}
-												{% for message in messages %}
-            									<div class="alert alert-{{message.tags}}" role="alert">
-              									{{ message }}
-            									</div>
-            									{% endfor %}
-											{% endif %}
+								 {% if messages %}
+									{% for message in messages %}
+									<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message }}
+									</div>
+									{% endfor %}
+								{% endif %}
 {% block sidebar %}{% endblock %}
 {% block slider %}{% endblock %}
 {% block content %}{% endblock %}

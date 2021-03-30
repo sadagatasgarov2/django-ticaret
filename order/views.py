@@ -14,8 +14,9 @@ def index(request):
 
 @login_required(login_url='/login')
 def addtocart(request, id):
+    current_user = request.user
     url = request.META.get('HTTP_REFERER')
-    checkproduct = ShopCart.objects.filter(product_id=id)
+    checkproduct = ShopCart.objects.filter(product_id=id, user_id=current_user.id)
     if checkproduct:
         control = 1
     else:
@@ -25,36 +26,33 @@ def addtocart(request, id):
         form = ShopCartForm(request.POST)
         if form.is_valid():
             if control == 1:
-                data = ShopCart.objects.get(product_id=id)
+                data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
                 data.quantity += form.cleaned_data['quantity']
                 data.save()
-                messages.success(request, "Urun basari ile sebete meklenmistir")
             else:
-                current_user = request.user
                 data = ShopCart()
                 data.user_id = current_user.id
                 data.product_id = id
                 data.quantity = form.cleaned_data['quantity']
                 data.save()
-                messages.success(request, "Urun basari ile sebete eklenmistir")
-                return redirect(url)
-    elif request.method:
+        request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
+        messages.success(request, "Urun basari ile sebete eklenmistir")
+        return HttpResponseRedirect(url)
+    else:
         if control == 1:
-            data = ShopCart.objects.get(product_id=id)
+            data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
             data.quantity += 1
             data.save()
-            messages.success(request, "Urun basari ile sebete mmeklenmistir")
         else:
-            current_user = request.user
             data = ShopCart()
             data.user_id = current_user.id
             data.product_id = id
             data.quantity = 1
             data.save()
-            messages.success(request, "Urun basari ile sebete eklenmistir")
-            return HttpResponseRedirect(url)
-    else:
-        messages.warning(request, "Urun ekleme sirasinda hata olustu")
+        request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
+        messages.success(request, "Urun basari ile sebete eklenmistir")
+        return HttpResponseRedirect(url)
+    messages.warning(request, "Urun ekleme sirasinda hata olustu")
     return HttpResponseRedirect(url)
 
 
@@ -63,10 +61,12 @@ def shopcart(request):
     category = Category.objects.all()
     current_user = request.user
     shopcart = ShopCart.objects.filter(user_id=current_user.id)
+
     total = 0
     for rs in shopcart:
         total += rs.product.price * rs.quantity
 
+    request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
     context = {'shopcart': shopcart,
                'category': category,
                'total': total}
@@ -77,5 +77,7 @@ def shopcart(request):
 def deletefromcart(request, id):
     shopcart = ShopCart.objects.filter(id=id)
     shopcart.delete()
+    current_user = request.user
+    request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
     messages.success(request, "Silinidi urun carttan")
     return HttpResponseRedirect('/order/shopcart')
