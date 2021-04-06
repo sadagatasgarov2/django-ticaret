@@ -14,6 +14,22 @@
 {% endblock %}
 
 {% block content %}
+
+   $("#query").autocomplete({
+      source: "/search_auto/",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+
+
 <!-- BREADCRUMB -->
 	<div id="breadcrumb">
 		<div class="container">
@@ -79,15 +95,20 @@
 							<p><strong>Brand:</strong> E-SHOP</p>
 							<p>{{product_detail.description}}</p>
 
-
 							<div class="product-btns">
 								<form action = "/order/addtocart/{{product_detail.id}}" method="POST">
 									{% csrf_token %}
+									{% if product_detail.amount %}
 								<div class="qty-input">
 									<span class="text-uppercase">QTY: </span>
 									<input class="input" type="number" name="quantity" min="0" max="{{product_detail.amount}}" value="1" />
 								</div>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+									<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+									{% else %}
+									<button class="primary-btn add-to-cart hidden"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+									<hr/>
+									<div> <h4> Urun stokta bulunmuyor </h4></div>
+									{% endif %}"
 								</form>
 								<div class="pull-right">
 									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>

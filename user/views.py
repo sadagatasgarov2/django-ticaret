@@ -14,10 +14,10 @@ def index(request):
     category = Category.objects.all()
     current_user = request.user
     setting = Setting.objects.get(pk=3)
-    profile = UserProfile.objects.filter(user_id=current_user.id)
+    profile = UserProfile.objects.get(user_id=current_user.id)
     context = {'category': category,
                'setting': setting,
-               'profile': profile
+               'profile': profile,
                }
     return render(request, 'user_profile.html', context)
 

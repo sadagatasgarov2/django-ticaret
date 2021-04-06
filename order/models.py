@@ -48,7 +48,7 @@ class Order(models.Model):
     phone = models.CharField(blank=True, max_length=20)
     address = models.CharField(blank=True, max_length=150)
     city = models.CharField(blank=True, max_length=20)
-    country = models.CharField(blank=True, max_length=20, choices=STATUS)
+    country = models.CharField(blank=True, max_length=20)
     total = models.FloatField()
     status = models.CharField(max_length=10, choices=STATUS, default='New')
     ip = models.CharField(blank=True, max_length=20)
