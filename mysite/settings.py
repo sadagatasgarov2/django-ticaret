@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!l3!x0w-(f39+(@*a3a^8p@gf+o66e(@c#w1u13u*0=#-qpxbn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'banumarket.herokuapp.com']
 
