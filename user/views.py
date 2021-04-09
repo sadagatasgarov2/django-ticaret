@@ -59,3 +59,7 @@ def user_password(request):
         context = {'form': form,
                    'category': category}
     return render(request, 'user_password.html', context)
+
+
+def orders(request):
+    return HttpResponse('dsfdsfdsfdsfs')
