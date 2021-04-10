@@ -33,3 +33,11 @@ def addcomment(request, id):
 
     messages.warning(request, "Yorumunuz gonderilmedi")
     return HttpResponseRedirect(url)
+
+
+@login_required(login_url='/login')
+def deletecomment(request, id):
+    comment = Comment.objects.filter(id=id, user_id=request.user.id)
+    comment.delete()
+    messages.success(request, "Silinidi Commentcarttan")
+    return HttpResponseRedirect('/user/comments')

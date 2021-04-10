@@ -62,7 +62,7 @@
 										<td class="price text-center"><strong>{{rs.product.price}}</strong><br><del class="font-weak"><small>{{rs.product.price}}</small></del></td>
 										<td class="qty text-center"><input class="input" type="number" value="{{rs.quantity}}"><strong></strong></td>
 										<td class="total text-center"><strong class="primary-color">{{rs.amount}}</strong></td>
-										<td class="text-right"><a href="/order/deletefromcart/{{rs.id}}" class="main-btn icon-btn"> <i class="fa fa-close"></i></a></td>
+										<td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Delete ! Are you sure?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
 									</tr>
 								{% endfor %}
 								</tbody>

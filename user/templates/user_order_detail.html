@@ -95,7 +95,7 @@
                     {% endif %}
                           {% for rs in orderitems %}
                         <tr>
-                                <td class="text-left"> <img src="{{ rs.product.image.url}}"> </td>
+                                <td class="text-left"> <img class="img-responsive" src="{{ rs.product.image.url}}"> </td>
                                 <td class="text-left"><a href="/product/{{rs.product.id}}/{{rs.product.slug}}">{{rs.product.title}}/</a></td>
                                 <td class="text-left">{{ rs.price}}</td>
                                 <td class="text-left">{{ rs.quantity}}</td>

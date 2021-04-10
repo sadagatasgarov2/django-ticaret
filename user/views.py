@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from home.models import Setting, UserProfile
-from product.models import Category
+from product.models import Category, Comment
 from order.models import Order, OrderProduct
 from user.forms import UserUpdateForm, ProfileUpdateForm
 
@@ -85,3 +85,12 @@ def order_detail(request, id):
                'order': order,
                'orderitems': orderitems}
     return render(request, 'user_order_detail.html', context)
+
+@login_required(login_url='/login')
+def comments(request):
+    current_user = request.user
+    category = Category.objects.all()
+    comments = Comment.objects.filter(user_id=request.user.id)
+    context = {'category': category,
+               'comments': comments}
+    return render(request, 'user_comments.html', context)
