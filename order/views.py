@@ -11,6 +11,7 @@ from order.models import ShopCartForm, ShopCart, OrderForm, Order, OrderProduct
 from product.models import Category, Product
 
 
+@login_required(login_url='/login')
 def index(request):
     return HttpResponse('Order App')
 

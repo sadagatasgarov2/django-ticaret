@@ -59,6 +59,9 @@ class Order(models.Model):
     def __str__(self):
         return self.user.first_name
 
+    def username(self):
+        return self.user.user_name
+
 
 class OrderForm(ModelForm):
     class Meta:

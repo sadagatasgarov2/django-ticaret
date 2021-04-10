@@ -3,13 +3,15 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from home.models import Setting, UserProfile
 from product.models import Category
+from order.models import Order, OrderProduct
 from user.forms import UserUpdateForm, ProfileUpdateForm
 
 
+@login_required(login_url='/login')
 def index(request):
     category = Category.objects.all()
     current_user = request.user
@@ -22,6 +24,7 @@ def index(request):
     return render(request, 'user_profile.html', context)
 
 
+@login_required(login_url='/login')
 def user_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
@@ -42,14 +45,15 @@ def user_update(request):
         return render(request, 'user_update.html', context)
 
 
+@login_required(login_url='/login')
 def user_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)# important
+            update_session_auth_hash(request, user)  # important
             messages.success(request, 'Sizin sifreniz guncellendi')
-            return  HttpResponseRedirect('/user')
+            return HttpResponseRedirect('/user')
         else:
             messages.error(request, "Please correct the errorr")
             return HttpResponseRedirect('/user/password')
@@ -61,5 +65,23 @@ def user_password(request):
     return render(request, 'user_password.html', context)
 
 
+@login_required(login_url='/login')
 def orders(request):
-    return HttpResponse('dsfdsfdsfdsfs')
+    current_user = request.user
+    category = Category.objects.all()
+    orders = Order.objects.filter(user_id=request.user.id)
+    context = {'category': category,
+               'orders': orders}
+    return render(request, 'user_orders.html', context)
+
+
+@login_required(login_url='/login')
+def order_detail(request, id):
+    current_user = request.user
+    category = Category.objects.all()
+    order = Order.objects.get(user_id=request.user.id, id=id)
+    orderitems = OrderProduct.objects.filter(order_id=id)
+    context = {'category': category,
+               'order': order,
+               'orderitems': orderitems}
+    return render(request, 'user_order_detail.html', context)
