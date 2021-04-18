@@ -1,0 +1,51 @@
+
+{% extends 'homebase.html' %}
+
+{% block title %} {{ product_detail.title }} {% endblock %}
+{% block description %} {{ product_detail.description }} {% endblock %}
+{% block keywords %} {{ product_detail.keywords }} {% endblock %}
+
+{% block head %} <link rel="icon"
+      type="image/png"
+      href="{{ setting.icon.url}}"> {% endblock %}
+
+{% block sidebar %}
+{% include 'sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Products</a></li>
+				<li><a href="/category/{{product_detail.category.id}}/{{product_detail.category.slug }}">{{ product_detail.category }}</a></li>
+				<li class="active">{{content.title}}</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<img src="{{content.image.url}}"  height="100" align="left" style="padding: 10px; border-radius: 25px" >
+				{{ content.detail|safe }}
+				<hr>
+				{% for rs in images %}
+
+				<img src="{{rs.image.url}}"  height="200" alt=""">
+
+				{% endfor %}
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+ {% endblock %}

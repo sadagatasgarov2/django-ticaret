@@ -42,11 +42,10 @@
 					<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
 					<ul class="menu-list">
 						<li><a href="/">Ana sayfa</a></li>
-
-
-						{% recursetree category %}
+						{% if menu %}
+						{% recursetree menu %}
 						<li class="dropdown mega-dropdown"><a
-								href="/content/{{node.id}}/{{node.slug}}" class="dropdown-toggle" {% if not node.is_leaf_node %} data-toggle="dropdown"  aria-expanded="true" {% endif %}>
+								href="/menu/{{node.id}}" class="dropdown-toggle" {% if not node.is_leaf_node %} data-toggle="dropdown"  aria-expanded="true" {% endif %}>
 								{{ node.title }}
 								{% if not node.is_leaf_node %} <i class="fa fa-caret-down"> </i> {% endif %}
 						</a>
@@ -77,6 +76,7 @@
 
 						</li>
 						{% endrecursetree %}
+						{% endif %}
 
 
 

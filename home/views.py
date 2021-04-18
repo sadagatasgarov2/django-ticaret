@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.contrib import messages
 # Create your views here.
 import product
+from content.models import Menu, Content, CImages
 from home.forms import SearchForm, SignupForm
 from home.models import Setting, ContactForm, ContactFormMassage, UserProfile
 from order.models import ShopCart
@@ -19,6 +20,9 @@ def index(request):
     setting = Setting.objects.get(pk=3)
     sliderdata = Product.objects.all()[:5]
     category = Category.objects.all()
+    menu = Menu.objects.all()
+    news = Content.objects.filter(type = 'haber').order_by('-id')[:4]
+    announcement = Content.objects.filter(type='duyuru').order_by('-id')[:4]
     dayproduct = Product.objects.all()[:4]
     lastproduct = Product.objects.all().order_by('-id')[:4]
     randomproduct = Product.objects.all().order_by('?')[:4]
@@ -28,6 +32,9 @@ def index(request):
     context = {'setting': setting,
                'sliderdata': sliderdata,
                'category': category,
+               'menu': menu,
+               'news':news,
+               'announcement': announcement,
                'page': 'home',
                'dayproduct': dayproduct,
                'lastproduct': lastproduct,
@@ -98,16 +105,28 @@ def product_detail(request, id, slug):
     return render(request, 'product_detail.html', context)
 
 
+def content_detailbdksbkfjd(request, id, slug):
+    category = Category.objects.all()
+    product_detail = Product.objects.filter(category_id=id)
+    link = '/product/' + str(product_detail[0].id) + '/' + product_detail[0].slug
+    context = {'category': category,
+               }
+    # return render(request, 'products.html', context)
+    return HttpResponse(link)
+    # return HttpResponseRedirect(link)
+
+
 def content_detail(request, id, slug):
     category = Category.objects.all()
-    products = Product.objects.filter(category_id=id)
-    ## link ='/product/' + str(product_detail[0].id) + '/' + product_detail[0].slug
+    menu = Menu.objects.all()
+    content = Content.objects.get(pk=id)
+    images = CImages.objects.filter(content_id = id)
     context = {'category': category,
-               'products': products,
+               'menu':menu,
+               'content': content,
+               'images': images
                }
-    return render(request, 'products.html', context)
-    ## return HttpResponse(link)
-    ## return HttpResponseRedirect(link)
+    return render(request, 'content_detail.html', context)
 
 
 def product_search(request):
@@ -192,3 +211,14 @@ def signup_view(request):
                'form': form
                }
     return render(request, 'signup.html', context)
+
+
+def menu(request, id):
+    content = Content.objects.get(menu_id=id)
+    if content:
+        link = '/content/' + str(content.id) + '/menu'
+        return HttpResponseRedirect(link)
+    else:
+        messages.success(request, "HAta !!! Ilgili icerik bulunamai")
+        link = '/'
+        return HttpResponseRedirect(link)
