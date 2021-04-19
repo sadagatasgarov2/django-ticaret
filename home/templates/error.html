@@ -1,0 +1,43 @@
+
+{% extends 'homebase.html' %}
+
+{% block title %} {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %} <link rel="icon"
+      type="image/png"
+      href="{{ setting.icon.url}}"> {% endblock %}
+
+{% block sidebar %}
+{% include 'sidebar.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li> <a href="/"> Anasayfa </a> </li>
+				<li class="active">Hata</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<h1>Aradiginiz Icerik bulunamadi</h1>
+				<h3> <a href="/">Ana Sayfaya donun</a></h3>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+ {% endblock %}

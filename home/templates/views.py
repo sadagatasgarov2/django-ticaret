@@ -4,7 +4,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib import messages
 # Create your views here.
 import product
@@ -21,7 +21,7 @@ def index(request):
     sliderdata = Product.objects.all()[:5]
     category = Category.objects.all()
     menu = Menu.objects.all()
-    news = Content.objects.filter(type='haber').order_by('-id')[:4]
+    news = Content.objects.filter(type = 'haber').order_by('-id')[:4]
     announcement = Content.objects.filter(type='duyuru').order_by('-id')[:4]
     dayproduct = Product.objects.all()[:4]
     lastproduct = Product.objects.all().order_by('-id')[:4]
@@ -33,7 +33,7 @@ def index(request):
                'sliderdata': sliderdata,
                'category': category,
                'menu': menu,
-               'news': news,
+               'news':news,
                'announcement': announcement,
                'page': 'home',
                'dayproduct': dayproduct,
@@ -94,20 +94,15 @@ def category_products(request, id, slug):
 
 def product_detail(request, id, slug):
     category = Category.objects.all()
-    try:
-        product_detail = Product.objects.get(pk=id)
-        image = Images.objects.filter(product_id=id)
-        comments = Comment.objects.filter(product_id=id, status='True')
-        context = {'category': category,
-                   'product_detail': product_detail,
-                   'image': image,
-                   'comments': comments
-                   }
-        return render(request, 'product_detail.html', context)
-    except:
-        messages.warning(request, "HAta !!! Ilgili icerik bulunamai")
-        link = '/error/'
-        return HttpResponseRedirect(link)
+    product_detail = Product.objects.get(pk=id)
+    image = Images.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id, status='True')
+    context = {'category': category,
+               'product_detail': product_detail,
+               'image': image,
+               'comments': comments
+               }
+    return render(request, 'product_detail.html', context)
 
 
 def content_detailbdksbkfjd(request, id, slug):
@@ -125,9 +120,9 @@ def content_detail(request, id, slug):
     category = Category.objects.all()
     menu = Menu.objects.all()
     content = Content.objects.get(pk=id)
-    images = CImages.objects.filter(content_id=id)
+    images = CImages.objects.filter(content_id = id)
     context = {'category': category,
-               'menu': menu,
+               'menu':menu,
                'content': content,
                'images': images
                }
@@ -224,13 +219,6 @@ def menu(request, id):
         link = '/content/' + str(content.id) + '/menu'
         return HttpResponseRedirect(link)
     except:
-        messages.warning(request, "HAta !!! Ilgili icerik bulunamai")
-        link = '/error/'
+        messages.success(request, "HAta !!! Ilgili icerik bulunamai")
+        link = '/'
         return HttpResponseRedirect(link)
-
-
-def error(request):
-    category = Category.objects.all()
-    context = {'category': category,
-               }
-    return render(request, 'error.html', context)
