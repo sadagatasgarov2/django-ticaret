@@ -1,6 +1,8 @@
 import datetime
 from builtins import bool, type
 from pyexpat import model
+
+from django.forms import ModelForm, TextInput, Textarea
 from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
@@ -69,7 +71,18 @@ class Content(models.Model):
     def get_absolute_url(self):
         return reverse('content_detail', kwargs={'slug': self.slug})
 
-
+class ContentForm(ModelForm):
+    class Meta:
+        model = Content
+        fields = ['type', 'title', 'keyword', 'description', 'image', 'detail', 'slug', 'status',]
+        widgets = {
+            'type': TextInput(attrs={'class': 'input', 'placeholder': 'type'}),
+            'title': TextInput(attrs={'class': 'input', 'placeholder': 'title'}),
+            'keyword': TextInput(attrs={'class': 'input', 'placeholder': 'keyword'}),
+            'description': TextInput(attrs={'class': 'input', 'placeholder': 'description'})
+            'image': TextInput(attrs={'class': 'input', 'placeholder': 'image'})
+            'detail': RichTextUploadingField()
+        }
 
 
 class CImages(models.Model):
