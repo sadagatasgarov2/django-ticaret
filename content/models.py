@@ -1,3 +1,4 @@
+import datetime
 from builtins import bool, type
 from pyexpat import model
 from django.urls import reverse
@@ -6,6 +7,7 @@ from django.db import models
 
 # Create your models here.
 from django.utils.safestring import mark_safe
+from django_extensions.db.fields import AutoSlugField
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
@@ -55,16 +57,19 @@ class Content(models.Model):
     description = models.CharField(max_length=255, blank=True)
     image = models.ImageField(blank=False, upload_to='images/')
     detail = RichTextUploadingField()
-    slug = models.SlugField(blank=False, unique=True)
+    slug = AutoSlugField(populate_from=['title', 'date'])
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+    date = datetime.datetime.now()
 
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
 
     def get_absolute_url(self):
         return reverse('content_detail', kwargs={'slug': self.slug})
+
+
 
 
 class CImages(models.Model):

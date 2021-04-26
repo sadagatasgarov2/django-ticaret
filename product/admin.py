@@ -15,15 +15,15 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'parent', 'status', 'image_tag']
     readonly_fields = ('image_tag',)
     list_filter = ['status']
-    prepopulated_fields = {'slug': ('title',)}
+
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'status', 'image_tag', 'catimg_tag']
-    readonly_fields = ('image_tag', 'catimg_tag')
+    list_display = ['title', 'category', 'status', 'image_tag', 'catimg_tag', 'slug']
+    readonly_fields = ('image_tag', 'catimg_tag', 'slug')
     list_filter = ['category']
     inlines = [ProductImageInline, ]
-    prepopulated_fields = {'slug': ('title',)}
+
 
 
 class ImagesAdmin(admin.ModelAdmin):

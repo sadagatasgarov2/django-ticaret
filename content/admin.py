@@ -10,9 +10,11 @@ class ContentImageInline(admin.TabularInline):
     model = CImages
     extra = 2
 
+
 class MenuContentInline(admin.TabularInline):
-    model=Content
+    model = Content
     extra = 1
+
 
 class ContentAdmin(admin.ModelAdmin):
     list_display = ['title', 'type', 'image_tag', 'status', 'create_at']

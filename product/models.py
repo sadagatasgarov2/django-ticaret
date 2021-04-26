@@ -1,9 +1,11 @@
+import datetime
 from pyexpat import model
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ModelForm
 from django.urls import reverse
+from django_extensions.db.fields import AutoSlugField
 from mptt.models import MPTTModel, TreeForeignKey
 # Create your models here.
 from django.utils.safestring import mark_safe
@@ -45,11 +47,8 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['title']
 
-
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
-
-
 
 
 class Product(models.Model):
@@ -66,10 +65,11 @@ class Product(models.Model):
     amount = models.PositiveIntegerField()
     minamount = models.IntegerField(default=0)
     detail = RichTextUploadingField()
-    slug = models.SlugField(blank=False, unique=True)
+    slug = AutoSlugField(populate_from=['title', 'date'])
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+    date = datetime.datetime.now()
 
     def __str__(self):
         return self.title
@@ -78,13 +78,18 @@ class Product(models.Model):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
 
     image_tag.short_description = 'Image'
+
     # method to create a fake table field in read only mode
 
     def catimg_tag(self):
         return mark_safe((Category.status))
 
+    def sluqdt(self):
+        return self.slug
+
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
+
 
 class Images(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -121,6 +126,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.subject
+
 
 class CommentForm(ModelForm):
     class Meta:
