@@ -151,3 +151,7 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+    
+    
+        
