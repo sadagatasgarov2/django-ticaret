@@ -44,6 +44,7 @@
                             <th class="text-left">Content resmi</th>
                             <th class="text-left">baslik</th>
                             <th class="text-left">Tipi</th>
+                            <th class="text-left">Galery</th>
                             <th class="text-left">baslik</th>
                             <th class="text-left">status/th>
                             <th class="text-left">Yayinlandigi tarix</th>
@@ -60,6 +61,7 @@
                                 <td class="text-left"> <img class="img-responsive" src="{{ rs.image.url}}"> </td>
                                 <td class="text-left">{{rs.title}}</td>
                                 <td class="text-left">{{ rs.type}}</td>
+                                <td><a href="javascript:;" onclick="window.open('/user/addimagecontent/{{ rs.id }}', 'gallery', 'height=600, width=800, top=50 left=150')" >Galery</a></td>
                                 <td class="text-left">{{ rs.title}}</td>
                                 <td class="text-left">{{ rs.status}}</td>
                                 <td class="text-left">{{ rs.create_at}}</td>

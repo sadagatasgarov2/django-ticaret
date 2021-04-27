@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-from content.models import Content, ContentForm, Menu
+from content.models import Content, ContentForm, Menu, ContentImageForm, CImages
 from home.models import Setting, UserProfile
 from product.models import Category, Comment
 from order.models import Order, OrderProduct
@@ -87,8 +87,8 @@ def order_detail(request, id):
                'orderitems': orderitems}
     return render(request, 'user_order_detail.html', context)
 
-@login_required(login_url='/login')
 
+@login_required(login_url='/login')
 def comments(request):
     current_user = request.user
     category = Category.objects.all()
@@ -105,7 +105,7 @@ def contents(request):
     contents = Content.objects.filter(user_id=request.user.id)
     context = {'category': category,
                'contents': contents,
-               'menu':menu}
+               'menu': menu}
     return render(request, 'user_contents.html', context)
 
 
@@ -159,12 +159,41 @@ def editcontent(request, id):
         context = {'category': category,
                    'form': form,
                    'menu': menu
-        }
+                   }
         return render(request, 'user_addcontent.html', context)
-
 
 
 def deletecontent(request, id):
     content = Content.objects.get(id=id)
     content.delete()
     return HttpResponseRedirect('/user/contents')
+
+
+def addimagecontent(request, id):
+    form = ContentImageForm(request.POST, request.FILES)
+    if request.method == 'POST':
+        last_url = request.META.get('HTTP_REFERER')
+        if form.is_valid():
+            current_user = request.user
+            data = CImages()
+            data.content_id = id
+            data.title = form.cleaned_data['title']
+            data.image = form.cleaned_data['image']
+            data.save()
+            messages.success(request, "Image basari ile kaydedili")
+            return HttpResponseRedirect(last_url)
+        else:
+            messages.warning(request, 'Bir yanlislik olmali bir daya deneyin')
+            return HttpResponseRedirect(last_url)
+    else:
+        content = Content.objects.get(id=id)
+        images = CImages.objects.filter(content_id=id)
+        form = ContentImageForm()
+        context = {
+                   'content': content,
+                   'images': images,
+                    'form':form
+
+        }
+        return render(request, 'content_galery.html', context)
+
