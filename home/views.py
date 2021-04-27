@@ -21,8 +21,8 @@ def index(request):
     sliderdata = Product.objects.all()[:5]
     category = Category.objects.all()
     menu = Menu.objects.all()
-    news = Content.objects.filter(type='haber').order_by('-id')[:4]
-    announcement = Content.objects.filter(type='duyuru').order_by('-id')[:4]
+    news = Content.objects.filter(type='haber', status=True).order_by('-id')[:4]
+    announcement = Content.objects.filter(type='duyuru', status=True).order_by('-id')[:4]
     dayproduct = Product.objects.all()[:4]
     lastproduct = Product.objects.all().order_by('-id')[:4]
     randomproduct = Product.objects.all().order_by('?')[:4]

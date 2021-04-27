@@ -19,8 +19,9 @@ class MenuContentInline(admin.TabularInline):
 class ContentAdmin(admin.ModelAdmin):
     list_display = ['title', 'type', 'image_tag', 'status', 'create_at']
     list_filter = ['status', 'type']
+    readonly_fields = ['slug']
     inlines = [ContentImageInline]
-    prepopulated_fields = {'slug': ('title',)}
+
 
 
 class ImagesAdmin(admin.ModelAdmin):

@@ -34,7 +34,7 @@
                     <div class="billing-details">
                         <div class="section-title">
                             <h3 class="title">Contents</h3>
-                            <a class="btn btn-primary" href="/user/addcontents/">Add Content</a>
+                            <a class="btn btn-primary" href="/user/addcontent/">Add Content</a>
 
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                          {% for rs in content %}
+                          {% for rs in contents %}
                         <tr>
                                 <td class="text-left"> <img class="img-responsive" src="{{ rs.image.url}}"> </td>
                                 <td class="text-left">{{rs.title}}</td>

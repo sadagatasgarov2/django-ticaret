@@ -2,7 +2,8 @@ import datetime
 from builtins import bool, type
 from pyexpat import model
 
-from django.forms import ModelForm, TextInput, Textarea
+from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, Textarea, Select, ImageField, FileInput
 from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
@@ -10,6 +11,7 @@ from django.db import models
 # Create your models here.
 from django.utils.safestring import mark_safe
 from django_extensions.db.fields import AutoSlugField
+
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
@@ -39,19 +41,21 @@ class Menu(MPTTModel):
         return ' / '.join(full_path[::1])
 
 
+
+TYPE = (
+    ('menu', 'menu'),
+    ('haber', 'haber'),
+    ('duyuru', 'duyuru'),
+    ('etkinlik', 'etkinlik'),
+)
+
+STATUS = (
+    ('True', 'True'),
+    ('False', 'False')
+)
+
 class Content(models.Model):
-    TYPE = (
-        ('menu', 'menu'),
-        ('haber', 'haber'),
-        ('duyuru', 'duyuru'),
-        ('etkinlik', 'etkinlik'),
-    )
-
-    STATUS = (
-        ('True', 'True'),
-        ('False', 'False')
-    )
-
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     menu = models.OneToOneField(Menu, null=True, blank=True, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=TYPE)
     title = models.CharField(max_length=150)
@@ -74,14 +78,15 @@ class Content(models.Model):
 class ContentForm(ModelForm):
     class Meta:
         model = Content
-        fields = ['type', 'title', 'keyword', 'description', 'image', 'detail', 'slug', 'status',]
+        fields = ['type', 'title', 'keyword', 'description', 'image', 'detail']
         widgets = {
-            'type': TextInput(attrs={'class': 'input', 'placeholder': 'type'}),
+            'type': Select(attrs={'class': 'input', 'placeholder': 'type'}, choices=TYPE),
             'title': TextInput(attrs={'class': 'input', 'placeholder': 'title'}),
             'keyword': TextInput(attrs={'class': 'input', 'placeholder': 'keyword'}),
-            'description': TextInput(attrs={'class': 'input', 'placeholder': 'description'})
-            'image': TextInput(attrs={'class': 'input', 'placeholder': 'image'})
-            'detail': RichTextUploadingField()
+            'description': TextInput(attrs={'class': 'input', 'placeholder': 'description'}),
+            'image': FileInput(attrs={'class': 'input', 'placeholder': 'image'}),
+            'detail': RichTextUploadingField(),
+            'status': 'False'
         }
 
 
