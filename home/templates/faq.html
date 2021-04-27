@@ -1,0 +1,61 @@
+{% extends 'homebase.html' %}
+{% block title %} {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %}{{ setting.keywords }}{% endblock %}
+{% block head %}
+<link rel="icon" type="image/png" href="{{ setting.icon.url}}" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion" ).accordion();
+  } );
+  </script>
+{% endblock %}
+
+
+{% block sidebar %}
+{% include 'sidebar.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      <li><a href="/"> Anasayfa </a></li>
+      <li class="active">
+        Arama Sonuclari
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- /BREADCRUMB -->
+	<div><!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+                <div id="accordion">
+                      {% for rs in faq %}
+                <h3>{{rs.ordernumber}}.{{ rs.question}}</h3>
+                  <div>
+                    <p>
+                    {{rs.answer}}
+                    </p>
+                  </div>
+                {% endfor %}
+                </div>
+
+			</div>
+        </div>
+			<!-- /row -->
+    </div>
+		<!-- /container -->
+    </div>
+<!-- /section -->
+{% endblock %}

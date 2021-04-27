@@ -10,7 +10,7 @@ from django.contrib import messages
 import product
 from content.models import Menu, Content, CImages
 from home.forms import SearchForm, SignupForm
-from home.models import Setting, ContactForm, ContactFormMassage, UserProfile
+from home.models import Setting, ContactForm, ContactFormMassage, UserProfile, FAQ
 from order.models import ShopCart
 from product.models import Product, Category, Images, Comment
 
@@ -234,3 +234,12 @@ def error(request):
     context = {'category': category,
                }
     return render(request, 'error.html', context)
+
+
+def faq(request):
+    category = Category.objects.all()
+    faq = FAQ.objects.all().order_by('ordernumber')
+    context = {'category': category,
+               'faq': faq
+               }
+    return render(request, 'faq.html', context)
